@@ -1,0 +1,17 @@
+# Paddle / PaddleOCR caches & downloaded models
+.paddleocr/
+.paddle/
+paddle_cache/
+
+# Paddle model files
+*.pdiparams
+*.pdiparams.info
+*.pdmodel
+*.pdparams
+
+# Outputs
+results/
+
+# Python cache
+__pycache__/
+*.pyc

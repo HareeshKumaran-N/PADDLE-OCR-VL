@@ -1,1 +1,1 @@
-Moved to Huggingface Space 
+Simple working script of paddle 
