@@ -1,16 +1,18 @@
 import "dotenv/config";
-import { bucketClient } from "./Utils/S3_Bucket/bucket.config.js";
+
 import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { buffer } from "stream/consumers";
 import type { Readable } from "node:stream";
 import { PDFiumLibrary } from "@hyzyla/pdfium";
-import { CONSOLE_LOG } from "./Utils/Utils.js";
-import { PDFtoImages } from "./Utils/Preprocessors/PDF/Pdf_utils.js";
-import { extractTextFromImage } from "./Utils/AI/textExtractor.js";
+import { bucketClient } from "./Storage/bucket.config.js";
+import { PDFtoImages } from "./Preprocessors/PDF/Pdf_utils.js";
+import { extractTextFromImage } from "./AI/textExtractor.js";
+
+
 
 const payload = {
   filename: "Delivery challan (1).pdf",
-  process: "file-to-embedings",
+  fileType:"PDF"
 };
 
 //Initialize the WASM engine (only do this once in your app lifecycle)
@@ -18,7 +20,7 @@ export const PDFLibraryInstance = await PDFiumLibrary.init();
 
 const worker = async () => {
 
-  CONSOLE_LOG('Workers Started');
+  console.log('Workers Started');
 
   //Download File by Filename
   const command = new GetObjectCommand({
@@ -35,9 +37,11 @@ const worker = async () => {
   const imagesBuffer = await PDFtoImages(downloadedData);
   
   //Imaged Pages => Text Extraction page wise
-  const content = imagesBuffer && await extractTextFromImage(imagesBuffer)
+   const textExtractorResponse = imagesBuffer && imagesBuffer.length &&  await extractTextFromImage(imagesBuffer)
 
-  CONSOLE_LOG('TEXT',content);
+  //Data insertion
+  
+
 
   //cleanup 
   PDFLibraryInstance.destroy();

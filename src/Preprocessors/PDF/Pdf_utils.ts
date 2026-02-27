@@ -1,4 +1,3 @@
-import { CONSOLE_LOG } from '@/Utils/Utils.js';
 import { PDFiumLibrary } from '@hyzyla/pdfium';
 import sharp from 'sharp';
 
@@ -14,7 +13,7 @@ export async function getPdfEngine() {
 export async function PDFtoImages(pdfBuffer: Buffer) {
     try {
 
-        CONSOLE_LOG('@PDF=>images', 'Conversion Process Begins');
+        console.log('@PDF=>images', 'Conversion Process Begins');
 
         const engine = await getPdfEngine();
         const document = await engine.loadDocument(pdfBuffer);
@@ -37,7 +36,7 @@ export async function PDFtoImages(pdfBuffer: Buffer) {
         return imageBuffers;
     }
     catch (error) {
-        CONSOLE_LOG('ERROR @Process => Images', error)
+        console.log('ERROR @Process => Images', error)
     }
 
 
